@@ -46,152 +46,152 @@ namespace Moroco {
         }
     }
 
-    public class MFunc<A>: Counter {
-        private static readonly Func<A> def = () => default(A);
-        private readonly Func<A> fun = def;
+    public class MFunc<R>: Counter {
+        private static readonly Func<R> def = () => default(R);
+        private readonly Func<R> fun = def;
 
         public MFunc(long expected): base(expected) {}
 
         public MFunc(long? min = null, long? max = null): base(min, max) {}
 
-        public MFunc(Func<A> f, long expected) : this(expected) {
+        public MFunc(Func<R> f, long expected) : this(expected) {
             fun = f ?? def;
         }
 
-        public MFunc(Func<A> f, long? min = null, long? max = null) : this(min, max) {
+        public MFunc(Func<R> f, long? min = null, long? max = null) : this(min, max) {
             fun = f ?? def;
         }
 
-        public A Invoke() {
+        public R Invoke() {
             Incr();
             return fun();
         }
 
-        public static implicit operator MFunc<A>(Func<A> f) {
-            return new MFunc<A>(f);
+        public static implicit operator MFunc<R>(Func<R> f) {
+            return new MFunc<R>(f);
         }
 
-        public static implicit operator Func<A>(MFunc<A> f) {
+        public static implicit operator Func<R>(MFunc<R> f) {
             return f.Invoke;
         }
 
-        public static MFunc<A> operator +(MFunc<A> a, Func<A> b) {
+        public static MFunc<R> operator +(MFunc<R> a, Func<R> b) {
             a = a ?? def;
-            return new MFunc<A>(a.fun + b, a.Min, a.Max);
+            return new MFunc<R>(a.fun + b, a.Min, a.Max);
         }
     }
 
-    public class MFunc<A, B>: Counter {
-        private static readonly Func<A, B> def = a => default(B);
-        private readonly Func<A, B> fun = def;
+    public class MFunc<A, R>: Counter {
+        private static readonly Func<A, R> def = a => default(R);
+        private readonly Func<A, R> fun = def;
 
         public MFunc(long expected): base(expected) {}
 
         public MFunc(long? min = null, long? max = null): base(min, max) {}
 
-        public MFunc(Func<A, B> f, long expected) : this(expected) {
+        public MFunc(Func<A, R> f, long expected) : this(expected) {
             fun = f ?? def;
         }
 
-        public MFunc(Func<A, B> f, long? min = null, long? max = null) : this(min, max) {
+        public MFunc(Func<A, R> f, long? min = null, long? max = null) : this(min, max) {
             fun = f ?? def;
         }
 
-        public B Invoke(A a) {
+        public R Invoke(A a) {
             Incr();
             return fun(a);
         }
 
-        public static implicit operator MFunc<A, B>(Func<A, B> f) {
-            return new MFunc<A, B>(f);
+        public static implicit operator MFunc<A, R>(Func<A, R> f) {
+            return new MFunc<A, R>(f);
         }
 
-        public static implicit operator Func<A, B>(MFunc<A, B> f) {
+        public static implicit operator Func<A, R>(MFunc<A, R> f) {
             return f.Invoke;
         }
 
-        public static MFunc<A, B> operator +(MFunc<A, B> a, Func<A, B> b) {
+        public static MFunc<A, R> operator +(MFunc<A, R> a, Func<A, R> b) {
             a = a ?? def;
-            return new MFunc<A, B>(a.fun + b, a.Min, a.Max);
+            return new MFunc<A, R>(a.fun + b, a.Min, a.Max);
         }
 
-        public static MFunc<A, B> operator &(MFunc<A, B> a, Func<MFunc<A, B>, MFunc<A, B>> map) {
+        public static MFunc<A, R> operator &(MFunc<A, R> a, Func<MFunc<A, R>, MFunc<A, R>> map) {
             return map(a);
         }
 
     }
 
-    public class MFunc<A, B, C>: Counter {
-        private static readonly Func<A, B, C> def = (a, b) => default(C);
-        private readonly Func<A, B, C> fun = def;
+    public class MFunc<A, B, R>: Counter {
+        private static readonly Func<A, B, R> def = (a, b) => default(R);
+        private readonly Func<A, B, R> fun = def;
 
         public MFunc(long expected): base(expected) {}
 
         public MFunc(long? min = null, long? max = null): base(min, max) {}
 
-        public MFunc(Func<A, B, C> f, long expected) : this(expected) {
+        public MFunc(Func<A, B, R> f, long expected) : this(expected) {
             fun = f ?? def;
         }
 
-        public MFunc(Func<A, B, C> f, long? min = null, long? max = null) : this(min, max) {
+        public MFunc(Func<A, B, R> f, long? min = null, long? max = null) : this(min, max) {
             fun = f ?? def;
         }
 
-        public C Invoke(A a, B b) {
+        public R Invoke(A a, B b) {
             Incr();
             return fun(a, b);
         }
 
-        public static implicit operator MFunc<A, B, C>(Func<A, B, C> f) {
-            return new MFunc<A, B, C>(f);
+        public static implicit operator MFunc<A, B, R>(Func<A, B, R> f) {
+            return new MFunc<A, B, R>(f);
         }
 
-        public static implicit operator Func<A, B, C>(MFunc<A, B, C> f) {
+        public static implicit operator Func<A, B, R>(MFunc<A, B, R> f) {
             return f.Invoke;
         }
 
-        public static MFunc<A, B, C> operator +(MFunc<A, B, C> a, Func<A, B, C> b) {
+        public static MFunc<A, B, R> operator +(MFunc<A, B, R> a, Func<A, B, R> b) {
             a = a ?? def;
-            return new MFunc<A, B, C>(a.fun + b, a.Min, a.Max);
+            return new MFunc<A, B, R>(a.fun + b, a.Min, a.Max);
         }
 
-        public static MFunc<A,B,C> operator &(MFunc<A,B,C> a, Func<MFunc<A,B,C>, MFunc<A,B,C>> map) {
+        public static MFunc<A,B,R> operator &(MFunc<A,B,R> a, Func<MFunc<A,B,R>, MFunc<A,B,R>> map) {
             return map(a);
         }
     }
 
-    public class MFunc<A, B, C, D>: Counter {
-        private static readonly Func<A, B, C, D> def = (a, b, c) => default(D);
-        private readonly Func<A, B, C, D> fun = def;
+    public class MFunc<A, B, C, R>: Counter {
+        private static readonly Func<A, B, C, R> def = (a, b, c) => default(R);
+        private readonly Func<A, B, C, R> fun = def;
 
         public MFunc(long expected): base(expected) {}
 
         public MFunc(long? min = null, long? max = null): base(min, max) {}
 
-        public MFunc(Func<A, B, C, D> f, long expected): this(expected) {
+        public MFunc(Func<A, B, C, R> f, long expected): this(expected) {
             fun = f ?? def;
         }
 
-        public MFunc(Func<A, B, C, D> f, long? min = null, long? max = null): this(min, max) {
+        public MFunc(Func<A, B, C, R> f, long? min = null, long? max = null): this(min, max) {
             fun = f ?? def;
         }
 
-        public D Invoke(A a, B b, C c) {
+        public R Invoke(A a, B b, C c) {
             Incr();
             return fun(a, b, c);
         }
 
-        public static implicit operator MFunc<A, B, C, D>(Func<A, B, C, D> f) {
-            return new MFunc<A, B, C, D>(f);
+        public static implicit operator MFunc<A, B, C, R>(Func<A, B, C, R> f) {
+            return new MFunc<A, B, C, R>(f);
         }
 
-        public static implicit operator Func<A, B, C, D>(MFunc<A, B, C, D> f) {
+        public static implicit operator Func<A, B, C, R>(MFunc<A, B, C, R> f) {
             return f.Invoke;
         }
 
-        public static MFunc<A, B, C, D> operator +(MFunc<A, B, C, D> a, Func<A, B, C, D> b) {
+        public static MFunc<A, B, C, R> operator +(MFunc<A, B, C, R> a, Func<A, B, C, R> b) {
             a = a ?? def;
-            return new MFunc<A, B, C, D>(a.fun + b, a.Min, a.Max);
+            return new MFunc<A, B, C, R>(a.fun + b, a.Min, a.Max);
         }
     }
 
