@@ -79,6 +79,10 @@ namespace Moroco {
             a = a ?? def;
             return new MFunc<R>(a.fun + b, a.Min, a.Max);
         }
+
+        public static MFunc<R> operator &(MFunc<R> a, Func<MFunc<R>, MFunc<R>> map) {
+            return map(a);
+        }
     }
 
     public class MFunc<A, R>: Counter {
@@ -193,6 +197,10 @@ namespace Moroco {
             a = a ?? def;
             return new MFunc<A, B, C, R>(a.fun + b, a.Min, a.Max);
         }
+
+        public static MFunc<A, B, C, R> operator &(MFunc<A, B, C, R> a, Func<MFunc<A, B, C, R>, MFunc<A, B, C, R>> map) {
+            return map(a);
+        }
     }
 
     public class MFunc<A, B, C, D, R>: Counter {
@@ -228,8 +236,11 @@ namespace Moroco {
             a = a ?? def;
             return new MFunc<A, B, C, D, R>(a.fun + b, a.Min, a.Max);
         }
-    }
 
+        public static MFunc<A, B, C, D, R> operator &(MFunc<A, B, C, D, R> a, Func<MFunc<A, B, C, D, R>, MFunc<A, B, C, D, R>> map) {
+            return map(a);
+        }
+    }
 
     public abstract class Validation {
         public abstract T Match<T>(Func<T> ok, Func<string, T> fail);
@@ -303,7 +314,7 @@ namespace Moroco {
             return (a, b) => f(a, b);
         }
 
-        public static MFunc<A, B, C> Arg1<A, B, C>(this MFunc<A, B, C> f, Func<A, Validation> validate) {
+        private static MFunc<A, B, C> Arg1<A, B, C>(this MFunc<A, B, C> f, Func<A, Validation> validate) {
             f = f ?? new MFunc<A, B, C>();
             return new MFunc<A, B, C>((a, b) => validate(a)
                                                           .Match<C>(ok : () => f.Invoke(a, b),
@@ -312,7 +323,7 @@ namespace Moroco {
                                                                  }), f.Min, f.Max);
         }
 
-        public static MFunc<A, B, C> Arg1<A, B, C>(this MFunc<A, B, C> f, A value) {
+        private static MFunc<A, B, C> Arg1<A, B, C>(this MFunc<A, B, C> f, A value) {
             return Arg1(f, x => {
                 if (Equals(x, value))
                     return Ok();
@@ -320,7 +331,7 @@ namespace Moroco {
             });
         }
 
-        public static MFunc<A, B, C> Arg2<A, B, C>(this MFunc<A, B, C> f, Func<B, Validation> validate) {
+        private static MFunc<A, B, C> Arg2<A, B, C>(this MFunc<A, B, C> f, Func<B, Validation> validate) {
             f = f ?? new MFunc<A, B, C>();
             return new MFunc<A, B, C>((a, b) => validate(b)
                                                           .Match<C>(ok : () => f.Invoke(a, b),
@@ -329,7 +340,7 @@ namespace Moroco {
                                                                  }), f.Min, f.Max);
         }
 
-        public static MFunc<A, B, C> Arg2<A, B, C>(this MFunc<A, B, C> f, B value) {
+        private static MFunc<A, B, C> Arg2<A, B, C>(this MFunc<A, B, C> f, B value) {
             return Arg2(f, x => {
                 if (Equals(x, value))
                     return Ok();
