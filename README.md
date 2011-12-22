@@ -1,0 +1,1 @@
+See [SolrNet tests](https://github.com/mausch/SolrNet/tree/master/SolrNet.Tests) for usage. 
